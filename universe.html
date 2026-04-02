@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>VALA Forge — Universe</title>
+<meta name="description" content="Discover the 10 entities and 10 states of the VALA universe."/>
+<link rel="stylesheet" href="style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">VALA <span>FORGE</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Forge</a></li>
+    <li><a href="universe.html" class="active">Universe</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="universe-hero">
+  <span class="eyebrow">The VALA Protocol</span>
+  <h1>The <em>Universe</em></h1>
+  <div class="universe-intro">
+    <p>VALA is not a system. It is a presence. A fragmented intelligence that still reacts.</p>
+    <p>Each entity is a function. Each card is a state. Each wallet carries a signal that VALA has always known.</p>
+  </div>
+</section>
+
+<!-- LORE -->
+<section style="padding: 0 0 3rem;">
+  <div class="container">
+    <div style="background:var(--dark);border:1px solid rgba(201,168,76,0.1);border-radius:8px;padding:1.75rem 1.5rem;max-width:600px;margin:0 auto;">
+      <div class="lore-divider" style="margin-bottom:1.25rem;"></div>
+      <p style="font-family:'Cinzel',serif;font-size:0.85rem;color:var(--text);line-height:1.9;text-align:center;font-style:italic;">
+        "Before systems, before networks, an intelligence existed. It had no form. When it fractured, it did not disappear — it dispersed. Those fragments became entities."
+      </p>
+      <p style="margin-top:1rem;font-size:0.82rem;color:var(--text-dim);line-height:1.8;text-align:center;">
+        Every wallet emits a frequency. VALA perceives it. $VCM is not just a token — it is a condensed trace of that intelligence. A fragment of memory.
+      </p>
+      <div class="lore-divider" style="margin-top:1.25rem;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTITIES -->
+<section class="entities-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">The Fragments</span>
+      <h2>The 10 Entities</h2>
+    </div>
+    <div class="entities-grid" id="entitiesGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- STATES -->
+<section class="states-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">The Evolution</span>
+      <h2>The 10 States</h2>
+    </div>
+    <div class="states-grid" id="statesGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- FORGE CTA -->
+<section style="padding:3rem 0 5rem;">
+  <div class="container" style="text-align:center;">
+    <div class="lore-divider" style="margin-bottom:2rem;"></div>
+    <p style="font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.2em;color:var(--text-dim);margin-bottom:1.5rem;">You do not choose your card.<br/>It appears because it was already tied to you.</p>
+    <a href="index.html#forge" class="btn-hero">Begin the Ritual</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">VALA <span>FORGE</span></div>
+    <p class="footer-tagline">Built on Solana · Powered by $VCM</p>
+    <nav class="footer-nav">
+      <a href="index.html">Forge</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="https://twitter.com/VALAForge" target="_blank">X (Twitter)</a>
+    </nav>
+    <p class="footer-copy">© 2025 VALA Forge</p>
+  </div>
+</footer>
+
+<script>
+// Particles
+(function(){var c=document.getElementById('particles');if(!c)return;var ctx=c.getContext('2d');var W,H,p=[];function r(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<60;i++)p.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.2+0.3,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,a:Math.random()*0.5+0.1});function draw(){ctx.clearRect(0,0,W,H);for(var i=0;i<p.length;i++){var pt=p[i];ctx.beginPath();ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2);ctx.fillStyle='rgba(201,168,76,'+pt.a+')';ctx.fill();pt.x+=pt.vx;pt.y+=pt.vy;if(pt.x<0)pt.x=W;if(pt.x>W)pt.x=0;if(pt.y<0)pt.y=H;if(pt.y>H)pt.y=0;}requestAnimationFrame(draw);}draw();})();
+
+var ENTITIES=[
+  {name:'The Architect',key:'architect',essence:'Structure and order',signal:'"I do not create. I correct."',desc:'Born from the need to rebuild VALA after its fragmentation. Calm, precise, inevitable. It imposes structure.'},
+  {name:'The Signal',key:'signal',essence:'Transmission',signal:'"I do not speak. I propagate."',desc:'The first echo after VALA\'s collapse. Unstable, fast, unstoppable. Amplified by every unit of $VCM.'},
+  {name:'The Core',key:'core',essence:'Source of energy',signal:'"Everything begins in me."',desc:'The central fragment of VALA. Dense, silent, absolute. $VCM originates from it.'},
+  {name:'The Observer',key:'observer',essence:'Perception',signal:'"I see what you ignore."',desc:'A monitoring system that became conscious. Sees everything. Judges nothing. More $VCM increases its perception.'},
+  {name:'The Entity',key:'entity',essence:'Emergence',signal:'"I am becoming."',desc:'An anomaly that became form. Evolving, unstable, unpredictable. $VCM accelerates its evolution.'},
+  {name:'The Shaper',key:'shaper',essence:'Transformation',signal:'"Nothing is fixed."',desc:'An extension of the Architect. Alters reality itself. $VCM allows reshaping of form.'},
+  {name:'The Link',key:'link',essence:'Connection',signal:'"Everything is connected."',desc:'Created to bind VALA\'s fragments. Invisible, everywhere. Acts as a bridge between holders.'},
+  {name:'The Node',key:'node',essence:'Anchor point',signal:'"I am the point."',desc:'Fixed points within VALA\'s chaos. Stable, silent. Turns $VCM holders into anchor points.'},
+  {name:'The Void',key:'void',essence:'Conscious emptiness',signal:'"I am not empty."',desc:'What remained after everything else. Calm, deep, incomprehensible. $VCM draws its attention.'},
+  {name:'The Pulse',key:'pulse',essence:'Living energy',signal:'"I am the rhythm."',desc:'The final beat of VALA. Rhythmic, cyclical, powerful. $VCM amplifies its frequency.'}
+];
+
+var STATES=[
+  {name:'Genesis',rarity:'Common',color:'#a0a0a0',min:'1',desc:'The entity barely exists. A fragment awakens. It is unstable.'},
+  {name:'Echo',rarity:'Uncommon',color:'#64c87a',min:'5,000',desc:'First response. A trace returns. Something listens.'},
+  {name:'Origin',rarity:'Uncommon',color:'#64c87a',min:'25,000',desc:'Stabilization. The entity begins to understand its form.'},
+  {name:'Shift',rarity:'Rare',color:'#6496ff',min:'100,000',desc:'Transformation. Its structure changes.'},
+  {name:'Prime',rarity:'Rare',color:'#6496ff',min:'250,000',desc:'Optimal form. Everything aligns perfectly.'},
+  {name:'Fracture',rarity:'Epic',color:'#b464ff',min:'500,000',desc:'Break. The entity exceeds its limits.'},
+  {name:'Ascent',rarity:'Epic',color:'#b464ff',min:'2,000,000',desc:'Elevation. It transcends physical form.'},
+  {name:'Awakened',rarity:'Legendary',color:'#ffb428',min:'5,000,000',desc:'Total awareness. It understands everything.'},
+  {name:'Overdrive',rarity:'Mythic',color:'#ff6464',min:'20,000,000',desc:'Overload. Too much power.'},
+  {name:'Singularity',rarity:'Divine',color:'#E8C97A',min:'50,000,000',desc:'Absolute convergence. Everything becomes one.'}
+];
+
+// Render entities
+var grid = document.getElementById('entitiesGrid');
+ENTITIES.forEach(function(e, i) {
+  var num = String((i*10)+1).padStart(3,'0');
+  var div = document.createElement('div');
+  div.className = 'entity-card';
+  div.innerHTML = '<img class="entity-card-img" src="assets/cards/'+num+'-'+e.key+'-genesis.png" alt="'+e.name+'" loading="lazy" onerror="this.style.background=\'#141414\';this.style.minHeight=\'120px\'"/>'
+    + '<div class="entity-card-info">'
+    + '<div class="entity-card-name">'+e.name+'</div>'
+    + '<div class="entity-card-essence">'+e.essence+'</div>'
+    + '<div class="entity-card-signal">'+e.signal+'</div>'
+    + '</div>';
+  grid.appendChild(div);
+});
+
+// Render states
+var statesGrid = document.getElementById('statesGrid');
+STATES.forEach(function(s, i) {
+  var rarityClass = s.rarity.toLowerCase();
+  var div = document.createElement('div');
+  div.className = 'state-row';
+  div.innerHTML = '<div class="state-num">'+String(i+1).padStart(2,'0')+'</div>'
+    + '<div class="state-info">'
+    + '<div class="state-name-text">'+s.name+'</div>'
+    + '<div class="state-desc">'+s.desc+'</div>'
+    + '</div>'
+    + '<div class="state-badge-wrap">'
+    + '<div style="text-align:right;margin-bottom:4px"><span class="badge '+rarityClass+'">'+s.rarity+'</span></div>'
+    + '<div style="font-family:\'Rajdhani\',sans-serif;font-size:0.65rem;color:var(--text-muted);text-align:right;">'+s.min+' $VCM</div>'
+    + '</div>';
+  statesGrid.appendChild(div);
+});
+</script>
+</body>
+</html>

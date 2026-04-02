@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>VALA Forge — Leaderboard</title>
+<meta name="description" content="The strongest signals. The rarest cards. The system never lies."/>
+<link rel="stylesheet" href="style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">VALA <span>FORGE</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Forge</a></li>
+    <li><a href="universe.html">Universe</a></li>
+    <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+  </ul>
+</nav>
+
+<section class="lb-hero">
+  <span class="eyebrow">The Signal Ranking</span>
+  <h1>Leaderboard</h1>
+  <p>Some resonate stronger. The system never lies.</p>
+</section>
+
+<section class="lb-section">
+  <div class="container">
+
+    <div id="lbLoading" class="lb-loading">
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+        <div style="display:flex;gap:4px;" id="ldots">
+          <span style="width:6px;height:6px;background:var(--gold-dim);border-radius:50%;display:inline-block;animation:dotBounce 1.2s ease infinite;"></span>
+          <span style="width:6px;height:6px;background:var(--gold-dim);border-radius:50%;display:inline-block;animation:dotBounce 1.2s 0.2s ease infinite;"></span>
+          <span style="width:6px;height:6px;background:var(--gold-dim);border-radius:50%;display:inline-block;animation:dotBounce 1.2s 0.4s ease infinite;"></span>
+        </div>
+        <span>Loading signals...</span>
+      </div>
+    </div>
+
+    <!-- PODIUM top 3 -->
+    <div id="podiumWrap" class="hidden">
+      <div class="podium" id="podium"></div>
+    </div>
+
+    <!-- FULL TABLE -->
+    <div id="tableWrap" class="hidden">
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Card</th>
+              <th>Name</th>
+              <th>Entity · State</th>
+              <th>Rarity</th>
+              <th>$VCM</th>
+            </tr>
+          </thead>
+          <tbody id="lbTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="lbEmpty" class="lb-empty hidden">
+      No forges recorded yet. <a href="index.html" style="color:var(--gold);">Be the first.</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">VALA <span>FORGE</span></div>
+    <p class="footer-tagline">Built on Solana · Powered by $VCM</p>
+    <nav class="footer-nav">
+      <a href="index.html">Forge</a>
+      <a href="universe.html">Universe</a>
+      <a href="https://twitter.com/VALAForge" target="_blank">X (Twitter)</a>
+    </nav>
+    <p class="footer-copy">© 2025 VALA Forge</p>
+  </div>
+</footer>
+
+<script>
+var SUPABASE_URL = 'https://jwinjoriiarrnstxrqxy.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_90xdRcz_Vr_xokPamuWmeA_uzyhgney';
+
+var RARITY_ORDER = ['Divine','Mythic','Legendary','Epic','Rare','Uncommon','Common'];
+var RARITY_COLORS = {
+  'Common':'#a0a0a0','Uncommon':'#64c87a','Rare':'#6496ff',
+  'Epic':'#b464ff','Legendary':'#ffb428','Mythic':'#ff6464','Divine':'#E8C97A'
+};
+var ENTITIES_MAP = {
+  'The Architect':'architect','The Signal':'signal','The Core':'core',
+  'The Observer':'observer','The Entity':'entity','The Shaper':'shaper',
+  'The Link':'link','The Node':'node','The Void':'void','The Pulse':'pulse'
+};
+var STATE_TO_NUM = {
+  'genesis':1,'echo':2,'origin':3,'shift':4,'prime':5,
+  'fracture':6,'ascent':7,'awakened':8,'overdrive':9,'singularity':10
+};
+
+// Particles
+(function(){var c=document.getElementById('particles');if(!c)return;var ctx=c.getContext('2d');var W,H,p=[];function r(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}r();window.addEventListener('resize',r);for(var i=0;i<60;i++)p.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,r:Math.random()*1.2+0.3,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,a:Math.random()*0.5+0.1});function draw(){ctx.clearRect(0,0,W,H);for(var i=0;i<p.length;i++){var pt=p[i];ctx.beginPath();ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2);ctx.fillStyle='rgba(201,168,76,'+pt.a+')';ctx.fill();pt.x+=pt.vx;pt.y+=pt.vy;if(pt.x<0)pt.x=W;if(pt.x>W)pt.x=0;if(pt.y<0)pt.y=H;if(pt.y>H)pt.y=0;}requestAnimationFrame(draw);}draw();})();
+
+function getCardImg(entity, state, cardNumber) {
+  var num = String(cardNumber).padStart(3,'0');
+  var key = ENTITIES_MAP[entity] || 'architect';
+  var st = (state || 'genesis').toLowerCase();
+  return 'assets/cards/' + num + '-' + key + '-' + st + '.png';
+}
+
+function walletShort(w) {
+  if (!w || w.length < 10) return w;
+  return w.substring(0,4) + '...' + w.substring(w.length-4);
+}
+
+function formatVCM(n) {
+  n = parseFloat(n);
+  if (n >= 1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'') + 'M';
+  if (n >= 1000) return (n/1000).toFixed(1).replace(/\.0$/,'') + 'K';
+  return n.toLocaleString();
+}
+
+// Deduplicate: keep best card per wallet
+function deduplicateForges(forges) {
+  var map = {};
+  forges.forEach(function(f) {
+    var w = f.wallet;
+    if (!map[w]) { map[w] = f; return; }
+    var existing = map[w];
+    var ro1 = RARITY_ORDER.indexOf(f.rarity);
+    var ro2 = RARITY_ORDER.indexOf(existing.rarity);
+    if (ro1 < ro2) map[w] = f;
+    else if (ro1 === ro2 && f.vcm_balance > existing.vcm_balance) map[w] = f;
+  });
+  return Object.values(map);
+}
+
+async function loadLeaderboard() {
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/forges?select=*&order=state_index.desc,vcm_balance.desc&limit=200', {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      }
+    });
+    var data = await res.json();
+
+    document.getElementById('lbLoading').classList.add('hidden');
+
+    if (!data || data.length === 0) {
+      document.getElementById('lbEmpty').classList.remove('hidden');
+      return;
+    }
+
+    // Deduplicate
+    var forges = deduplicateForges(data);
+
+    // Sort by rarity then VCM
+    forges.sort(function(a, b) {
+      var ra = RARITY_ORDER.indexOf(a.rarity);
+      var rb = RARITY_ORDER.indexOf(b.rarity);
+      if (ra !== rb) return ra - rb;
+      return b.vcm_balance - a.vcm_balance;
+    });
+
+    // Podium top 3
+    var podium = document.getElementById('podium');
+    var top3 = forges.slice(0, 3);
+    var podiumOrder = top3.length >= 2 ? [1, 0, 2] : [0]; // silver, gold, bronze
+    podiumOrder.forEach(function(idx) {
+      if (!top3[idx]) return;
+      var f = top3[idx];
+      var rank = idx + 1;
+      var rankLabels = ['🥇', '🥈', '🥉'];
+      var imgSrc = getCardImg(f.entity, f.state, f.card_number);
+      var div = document.createElement('div');
+      div.className = 'podium-card rank-' + rank;
+      div.innerHTML = '<div class="podium-rank">' + rankLabels[idx] + '</div>'
+        + '<img class="podium-img" src="' + imgSrc + '" alt="' + f.pseudo + '" onerror="this.style.background=\'#141414\'">'
+        + '<div class="podium-pseudo">' + f.pseudo + '</div>'
+        + '<div class="podium-info">' + f.entity + '</div>'
+        + '<div style="margin-top:4px"><span class="badge ' + (f.rarity||'').toLowerCase() + '">' + f.rarity + '</span></div>';
+      podium.appendChild(div);
+    });
+    document.getElementById('podiumWrap').classList.remove('hidden');
+
+    // Full table
+    var tbody = document.getElementById('lbTableBody');
+    forges.forEach(function(f, i) {
+      var imgSrc = getCardImg(f.entity, f.state, f.card_number);
+      var color = RARITY_COLORS[f.rarity] || '#a0a0a0';
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td class="lb-rank-cell">' + (i+1) + '</td>'
+        + '<td><img class="lb-card-thumb" src="' + imgSrc + '" alt="" onerror="this.style.background=\'#141414\'"></td>'
+        + '<td><div class="lb-pseudo">' + f.pseudo + '</div><div class="lb-wallet">' + walletShort(f.wallet) + '</div></td>'
+        + '<td style="font-size:0.72rem;color:var(--text-dim);">' + f.entity + '<br/><span style="color:' + color + ';font-size:0.65rem;">' + f.state + '</span></td>'
+        + '<td><span class="badge ' + (f.rarity||'').toLowerCase() + '">' + f.rarity + '</span></td>'
+        + '<td style="font-size:0.75rem;color:var(--text-dim);font-family:\'Cinzel\',serif;">' + formatVCM(f.vcm_balance) + '</td>';
+      tbody.appendChild(tr);
+    });
+    document.getElementById('tableWrap').classList.remove('hidden');
+
+  } catch(e) {
+    document.getElementById('lbLoading').classList.add('hidden');
+    document.getElementById('lbEmpty').classList.remove('hidden');
+    console.error('Leaderboard error:', e);
+  }
+}
+
+loadLeaderboard();
+</script>
+</body>
+</html>

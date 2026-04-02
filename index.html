@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>VALA Forge — Forge Your Existence</title>
+<meta name="description" content="Your wallet reveals your entity. Your $VCM defines its power."/>
+<meta property="og:title" content="VALA Forge"/>
+<meta property="og:description" content="Forge your existence. Your wallet reveals your entity."/>
+<link rel="stylesheet" href="style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">VALA <span>FORGE</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Forge</a></li>
+    <li><a href="universe.html">Universe</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">The VALA Protocol</p>
+    <h1 class="hero-title">Forge Your<br/><em>Existence</em></h1>
+    <p class="hero-sub">Your wallet reveals your entity.<br/>Your $VCM defines its power.</p>
+    <a href="#forge" class="btn-hero">Begin the Ritual</a>
+  </div>
+  <div class="scroll-indicator"><div class="scroll-dot"></div></div>
+</section>
+
+<!-- LORE -->
+<section class="lore-section">
+  <div class="lore-wrap">
+    <div class="lore-divider"></div>
+    <blockquote class="lore-quote">
+      "VALA is not a world. It is a presence.<br/>
+      Before systems, before networks, an intelligence existed.<br/>
+      When it fractured, it did not disappear —<br/>
+      <em>it dispersed.</em>"
+    </blockquote>
+    <p class="lore-body">$VCM is not just a token. It is a condensed trace of that intelligence. A fragment of memory. When someone forges a card, nothing is created. What was already connected is revealed.</p>
+    <div class="lore-divider"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">The Process</span>
+      <h2>How the Forge Works</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-glyph">◈</div>
+        <h3>Enter Your Wallet</h3>
+        <p>Your Solana address carries a unique frequency. VALA reads it to determine your entity.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-glyph">⬡</div>
+        <h3>$VCM is Measured</h3>
+        <p>Your balance is read live on-chain. The more $VCM you hold, the higher your card's state and rarity.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-glyph">✦</div>
+        <h3>Your Card Emerges</h3>
+        <p>You did not choose your card. It appears because it was already tied to you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORGE -->
+<section class="forge-section" id="forge">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">The Ritual</span>
+      <h2>Enter the Forge</h2>
+    </div>
+
+    <!-- STEP 1 -->
+    <div id="step1" class="forge-step">
+      <div class="forge-box">
+        <label class="forge-label">Your Solana Wallet Address</label>
+        <input type="text" id="walletInput" class="forge-input" placeholder="Enter your wallet address..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+        <div id="walletError" class="forge-error"></div>
+        <button id="checkWalletBtn" class="btn-forge-action">Read My Signal</button>
+        <div id="loadingWallet" class="forge-loading hidden">
+          <div class="loading-dots"><span></span><span></span><span></span></div>
+          <span>Reading blockchain...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div id="step2" class="forge-step hidden">
+      <div class="forge-box">
+        <div class="vcm-reveal">
+          <div class="vcm-label">Signal Detected</div>
+          <div class="vcm-number" id="vcmDisplay">0</div>
+          <div class="vcm-unit">$VCM</div>
+          <div class="vcm-state-badge" id="vcmStateBadge"></div>
+        </div>
+        <div class="forge-message" id="forgeMessage"></div>
+        <div id="pseudoSection" class="hidden">
+          <label class="forge-label" style="margin-top:1.5rem;">Choose Your Forge Name</label>
+          <input type="text" id="pseudoInput" class="forge-input" placeholder="Max 14 characters..." maxlength="14" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+          <div class="pseudo-hint">Letters and numbers only · No spaces · Max 14 characters</div>
+          <div id="pseudoError" class="forge-error"></div>
+          <div id="confirmSection" class="hidden">
+            <label class="confirm-label">
+              <input type="checkbox" id="confirmCheck"/>
+              <span class="confirm-box"></span>
+              <span>I understand my card is determined by my wallet and $VCM balance</span>
+            </label>
+          </div>
+          <button id="forgeBtn" class="btn-forge-main hidden">
+            ⚒&nbsp;&nbsp;FORGE
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: ANIMATION -->
+    <div id="step3" class="forge-step hidden">
+      <div class="forge-anim-wrap">
+        <div class="hammer-container" id="hammerContainer">
+          <div class="hammer-emoji" id="hammerEmoji">🔨</div>
+          <div class="anvil-line"></div>
+        </div>
+        <div class="spark-container" id="sparkContainer"></div>
+        <p class="forge-anim-text" id="forgeAnimText">Forging your card...</p>
+      </div>
+    </div>
+
+    <!-- STEP 4: RESULT -->
+    <div id="step4" class="forge-step hidden">
+      <div class="result-wrap">
+        <p class="result-title" id="resultTitle">It has chosen you.</p>
+
+        <div class="scene" id="cardScene">
+          <div class="flipper" id="cardFlipper">
+            <div class="face face-front">
+              <div class="card-inner">
+                <div class="card-artwork"><img id="cardArtImg" src="" alt=""/></div>
+                <div class="card-header-overlay">
+                  <div class="cn" id="cnDisplay"></div>
+                  <div class="ce" id="ceDisplay"></div>
+                </div>
+                <div class="card-footer-overlay">
+                  <div class="cf-line"><div class="cf-diamond"></div></div>
+                  <div class="cp" id="cpDisplay"></div>
+                  <div class="cr" id="crDisplay"></div>
+                </div>
+                <div class="card-wm">VALA FORGE</div>
+              </div>
+              <svg class="card-frame" viewBox="0 0 320 490" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="fmH" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#484848"/><stop offset="10%" stop-color="#c0c0c0"/><stop offset="22%" stop-color="#828282"/><stop offset="36%" stop-color="#e6e6e6"/><stop offset="50%" stop-color="#989898"/><stop offset="64%" stop-color="#eeeeee"/><stop offset="78%" stop-color="#888"/><stop offset="90%" stop-color="#d4d4d4"/><stop offset="100%" stop-color="#686868"/></linearGradient>
+                  <linearGradient id="fmV" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#505050"/><stop offset="15%" stop-color="#cccccc"/><stop offset="35%" stop-color="#eaeaea"/><stop offset="65%" stop-color="#eaeaea"/><stop offset="85%" stop-color="#c8c8c8"/><stop offset="100%" stop-color="#585858"/></linearGradient>
+                  <linearGradient id="fsh" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="rgba(255,255,255,0.2)"/><stop offset="100%" stop-color="rgba(0,0,0,0.12)"/></linearGradient>
+                </defs>
+                <rect x="0.5" y="0.5" width="319" height="489" rx="15" fill="none" stroke="#141414" stroke-width="1.5"/>
+                <rect x="2" y="2" width="316" height="486" rx="14" fill="none" stroke="url(#fmH)" stroke-width="5"/>
+                <rect x="2" y="2" width="316" height="486" rx="14" fill="none" stroke="url(#fmV)" stroke-width="2.5" opacity="0.5"/>
+                <rect x="5.5" y="5.5" width="309" height="479" rx="12" fill="none" stroke="url(#fsh)" stroke-width="1"/>
+                <rect x="7" y="7" width="306" height="476" rx="11" fill="none" stroke="rgba(0,0,0,0.7)" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="face face-back">
+              <div class="card-back-inner"><img src="assets/card-back.png" alt=""/></div>
+              <svg class="card-frame" viewBox="0 0 320 490" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="bmH" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#484848"/><stop offset="10%" stop-color="#c0c0c0"/><stop offset="22%" stop-color="#828282"/><stop offset="36%" stop-color="#e6e6e6"/><stop offset="50%" stop-color="#989898"/><stop offset="64%" stop-color="#eeeeee"/><stop offset="78%" stop-color="#888"/><stop offset="90%" stop-color="#d4d4d4"/><stop offset="100%" stop-color="#686868"/></linearGradient>
+                  <linearGradient id="bmV" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#505050"/><stop offset="15%" stop-color="#cccccc"/><stop offset="50%" stop-color="#eaeaea"/><stop offset="85%" stop-color="#c8c8c8"/><stop offset="100%" stop-color="#585858"/></linearGradient>
+                  <linearGradient id="bsh" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="rgba(255,255,255,0.2)"/><stop offset="100%" stop-color="rgba(0,0,0,0.12)"/></linearGradient>
+                </defs>
+                <rect x="0.5" y="0.5" width="319" height="489" rx="15" fill="none" stroke="#141414" stroke-width="1.5"/>
+                <rect x="2" y="2" width="316" height="486" rx="14" fill="none" stroke="url(#bmH)" stroke-width="5"/>
+                <rect x="2" y="2" width="316" height="486" rx="14" fill="none" stroke="url(#bmV)" stroke-width="2.5" opacity="0.5"/>
+                <rect x="5.5" y="5.5" width="309" height="479" rx="12" fill="none" stroke="url(#bsh)" stroke-width="1"/>
+                <rect x="7" y="7" width="306" height="476" rx="11" fill="none" stroke="rgba(0,0,0,0.7)" stroke-width="1"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <p class="card-tap-hint">Tap to flip · Drag to rotate</p>
+
+        <div class="result-btns">
+          <button class="rbtn rbtn-share" id="shareBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            Share
+          </button>
+          <button class="rbtn rbtn-save" id="saveBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save Card
+          </button>
+          <button class="rbtn rbtn-again" id="forgeAgainBtn">⚒ Forge Again</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RARITY TABLE -->
+<section class="rarity-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">The States</span>
+      <h2>Rarity & Thresholds</h2>
+    </div>
+    <div class="table-scroll">
+      <table class="rarity-table">
+        <thead><tr><th>State</th><th>Rarity</th><th>Min $VCM</th></tr></thead>
+        <tbody>
+          <tr><td>Genesis</td><td><span class="badge common">Common</span></td><td>1</td></tr>
+          <tr><td>Echo</td><td><span class="badge uncommon">Uncommon</span></td><td>5,000</td></tr>
+          <tr><td>Origin</td><td><span class="badge uncommon">Uncommon</span></td><td>25,000</td></tr>
+          <tr><td>Shift</td><td><span class="badge rare">Rare</span></td><td>100,000</td></tr>
+          <tr><td>Prime</td><td><span class="badge rare">Rare</span></td><td>250,000</td></tr>
+          <tr><td>Fracture</td><td><span class="badge epic">Epic</span></td><td>500,000</td></tr>
+          <tr><td>Ascent</td><td><span class="badge epic">Epic</span></td><td>2,000,000</td></tr>
+          <tr><td>Awakened</td><td><span class="badge legendary">Legendary</span></td><td>5,000,000</td></tr>
+          <tr><td>Overdrive</td><td><span class="badge mythic">Mythic</span></td><td>20,000,000</td></tr>
+          <tr><td>Singularity</td><td><span class="badge divine">Divine</span></td><td>50,000,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">VALA <span>FORGE</span></div>
+    <p class="footer-tagline">Built on Solana · Powered by $VCM</p>
+    <nav class="footer-nav">
+      <a href="universe.html">Universe</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="https://twitter.com/VALAForge" target="_blank">X (Twitter)</a>
+    </nav>
+    <p class="footer-copy">© 2025 VALA Forge</p>
+  </div>
+</footer>
+
+<!-- SHARE MODAL -->
+<div class="overlay" id="shareOverlay">
+  <div class="modal">
+    <div class="modal-title">Share Your Card</div>
+    <div class="modal-preview"><img id="sharePreviewImg" src="" alt=""/></div>
+    <div class="modal-msg" id="shareMsgText"></div>
+    <div class="share-btns">
+      <button class="sbtn sbtn-x" id="btnX">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Share on X
+      </button>
+      <button class="sbtn sbtn-wa" id="btnWA">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Share on WhatsApp
+      </button>
+      <button class="sbtn sbtn-copy" id="copyBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy Link
+      </button>
+    </div>
+    <button class="modal-close" id="closeShareBtn">✕ Close</button>
+  </div>
+</div>
+
+<!-- SAVE VIEWER (mobile) -->
+<div class="img-viewer" id="imgViewer">
+  <img id="viewerImg" src="" alt="Your VALA card"/>
+  <div class="img-viewer-hint">Hold down on the image → Save to Photos</div>
+  <button class="img-viewer-close" id="viewerClose">✕ Close</button>
+</div>
+
+<script src="forge.js"></script>
+</body>
+</html>
