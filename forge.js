@@ -667,26 +667,39 @@ if (closeShareBtn) closeShareBtn.addEventListener('click', function() { $('share
 var shareOverlay = $('shareOverlay');
 if (shareOverlay) shareOverlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
 
-var btnX = $('btnX');
+function getShareUrl() {
+  if (!currentCard) return 'https://valaforge.xyz';
+  return 'https://valaforge.xyz' + "/index.html"
+    + "?entity=" + currentCard.entity.key
+    + "&state=" + currentCard.state.name.toLowerCase()
+    + "&pseudo=" + encodeURIComponent(currentCard.pseudo)
+    + "&num=" + currentCard.cardNum
+    + "&rarity=" + encodeURIComponent(currentCard.state.rarity);
+}
+
+var btnX = $("btnX");
 if (btnX) btnX.addEventListener('click', function() {
+  var su = getShareUrl();
   var txt = encodeURIComponent(currentCard
-    ? '⚡ I just forged my VALA card — ' + currentCard.entity.name.toUpperCase() + ' · ' + currentCard.state.name.toUpperCase() + ' · ' + currentCard.state.rarity.toUpperCase() + '\n\nDiscover what entity lives within your soul. Forge yours now.\n\nvalaforge.vercel.app\n\n#VALA #VCM #SolanaNFT'
-    : 'Forge your VALA card!\n\nvalaforge.vercel.app\n\n#VALA #VCM');
+    ? '⚡ I just forged my VALA card — ' + currentCard.entity.name.toUpperCase() + ' · ' + currentCard.state.name.toUpperCase() + ' · ' + currentCard.state.rarity.toUpperCase() + '\n\nDiscover what entity lives within your soul.\n\n' + su + '\n\n#VALA #VCM #SolanaNFT'
+    : 'Forge your VALA card!\n\n' + 'https://valaforge.xyz' + '\n\n#VALA #VCM');
   window.open('https://twitter.com/intent/tweet?text=' + txt, '_blank');
 });
 
 var btnWA = $('btnWA');
 if (btnWA) btnWA.addEventListener('click', function() {
+  var su = getShareUrl();
   var txt = encodeURIComponent(currentCard
-    ? '⚡ I just forged my VALA card — ' + currentCard.entity.name.toUpperCase() + ' · ' + currentCard.state.name.toUpperCase() + '\n\nForge yours: valaforge.vercel.app'
-    : 'Forge your VALA card!\n\nvalaforge.vercel.app');
+    ? '⚡ I just forged my VALA card — ' + currentCard.entity.name.toUpperCase() + ' · ' + currentCard.state.name.toUpperCase() + '\n\nForge yours: ' + su
+    : 'Forge your VALA card!\n\n' + 'https://valaforge.xyz');
   window.open('https://wa.me/?text=' + txt, '_blank');
 });
 
 var copyBtn = $('copyBtn');
 if (copyBtn) copyBtn.addEventListener('click', function() {
   var btn = this; var o = btn.textContent;
-  navigator.clipboard.writeText(window.location.href).then(function() {
+  var su = getShareUrl();
+  navigator.clipboard.writeText(su).then(function() {
     btn.textContent = '✓ Copied!'; setTimeout(function() { btn.textContent = o; }, 2000);
   }).catch(function() { btn.textContent = 'Error'; setTimeout(function() { btn.textContent = o; }, 2000); });
 });
@@ -723,3 +736,56 @@ window.addEventListener('scroll', function() {
     }
   }
 });
+
+// ── READ URL PARAMS (shared card link) ──
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var entity = params.get('entity');
+  var state = params.get('state');
+  var pseudo = params.get('pseudo');
+  var num = params.get('num');
+  var rarity = params.get('rarity');
+  if (!entity || !state || !pseudo) return;
+
+  // Find entity and state
+  var entityObj = null;
+  for (var i = 0; i < ENTITIES.length; i++) {
+    if (ENTITIES[i].key === entity) { entityObj = ENTITIES[i]; break; }
+  }
+  var stateObj = null;
+  for (var j = 0; j < STATES.length; j++) {
+    if (STATES[j].name.toLowerCase() === state) { stateObj = STATES[j]; break; }
+  }
+  if (!entityObj || !stateObj) return;
+
+  currentCard = {
+    wallet: 'shared',
+    pseudo: pseudo,
+    entity: entityObj,
+    state: stateObj,
+    entityIndex: ENTITIES.indexOf(entityObj),
+    stateIndex: STATES.indexOf(stateObj),
+    cardNum: num || '001',
+    filename: 'assets/cards/' + num + '-' + entity + '-' + state + '.png',
+    vcm: 0
+  };
+
+  // Show card directly
+  window.addEventListener('DOMContentLoaded', function() {
+    var s1 = document.getElementById('step1');
+    var s4 = document.getElementById('step4');
+    if (s1) s1.classList.add('hidden');
+    if (s4) {
+      s4.classList.remove('hidden');
+      populateCard(currentCard);
+      setTimeout(initCard3D, 100);
+      var rt = document.getElementById('resultTitle');
+      if (rt) rt.textContent = pseudo + "'s card";
+    }
+    // Scroll to forge section
+    setTimeout(function() {
+      var forge = document.getElementById('forge');
+      if (forge) forge.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  });
+})();
