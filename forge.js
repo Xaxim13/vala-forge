@@ -7,7 +7,7 @@
 var SUPABASE_URL = 'https://jwinjoriiarrnstxrqxy.supabase.co';
 var SUPABASE_KEY = 'sb_publishable_90xdRcz_Vr_xokPamuWmeA_uzyhgney';
 var VCM_MINT = 'GMcThHFBnN6zjB2Mvbgdi19A2m35g81y7B1AKhgGbonk';
-var RPC_URL = 'https://api.mainnet-beta.solana.com';
+var RPC_URL = 'https://mainnet.helius-rpc.com/?api-key=04d06540-520b-4f4d-b31e-fbebd33c672e';
 
 // ── ENTITIES ──
 var ENTITIES = [
