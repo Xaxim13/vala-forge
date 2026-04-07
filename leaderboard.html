@@ -58,6 +58,7 @@
               <th>Entity · State</th>
               <th>Rarity</th>
               <th>$VCM</th>
+              <th>Forged</th>
             </tr>
           </thead>
           <tbody id="lbTableBody"></tbody>
@@ -119,6 +120,12 @@ function walletShort(w) {
   return w.substring(0,4) + '...' + w.substring(w.length-4);
 }
 
+function formatDate(d) {
+  if (!d) return '—';
+  var date = new Date(d);
+  return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' });
+}
+
 function formatVCM(n) {
   n = parseFloat(n);
   if (n >= 1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'') + 'M';
@@ -126,24 +133,9 @@ function formatVCM(n) {
   return n.toLocaleString();
 }
 
-// Deduplicate: keep best card per wallet
-function deduplicateForges(forges) {
-  var map = {};
-  forges.forEach(function(f) {
-    var w = f.wallet;
-    if (!map[w]) { map[w] = f; return; }
-    var existing = map[w];
-    var ro1 = RARITY_ORDER.indexOf(f.rarity);
-    var ro2 = RARITY_ORDER.indexOf(existing.rarity);
-    if (ro1 < ro2) map[w] = f;
-    else if (ro1 === ro2 && f.vcm_balance > existing.vcm_balance) map[w] = f;
-  });
-  return Object.values(map);
-}
-
 async function loadLeaderboard() {
   try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/forges?select=*&order=state_index.desc,vcm_balance.desc&limit=200', {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/forges?select=*&order=state_index.desc,vcm_balance.desc', {
       headers: {
         'apikey': SUPABASE_KEY,
         'Authorization': 'Bearer ' + SUPABASE_KEY
@@ -158,16 +150,7 @@ async function loadLeaderboard() {
       return;
     }
 
-    // Deduplicate
-    var forges = deduplicateForges(data);
-
-    // Sort by rarity then VCM
-    forges.sort(function(a, b) {
-      var ra = RARITY_ORDER.indexOf(a.rarity);
-      var rb = RARITY_ORDER.indexOf(b.rarity);
-      if (ra !== rb) return ra - rb;
-      return b.vcm_balance - a.vcm_balance;
-    });
+    var forges = data; // 1 row per wallet guaranteed by upsert
 
     // Podium top 3
     var podium = document.getElementById('podium');
@@ -201,7 +184,8 @@ async function loadLeaderboard() {
         + '<td><div class="lb-pseudo">' + f.pseudo + '</div><div class="lb-wallet">' + walletShort(f.wallet) + '</div></td>'
         + '<td style="font-size:0.72rem;color:var(--text-dim);">' + f.entity + '<br/><span style="color:' + color + ';font-size:0.65rem;">' + f.state + '</span></td>'
         + '<td><span class="badge ' + (f.rarity||'').toLowerCase() + '">' + f.rarity + '</span></td>'
-        + '<td style="font-size:0.75rem;color:var(--text-dim);font-family:\'Cinzel\',serif;">' + formatVCM(f.vcm_balance) + '</td>';
+        + '<td style="font-size:0.75rem;color:var(--text-dim);font-family:\'Cinzel\',serif;">' + formatVCM(f.vcm_balance) + '</td>'
+        + '<td style="font-size:0.65rem;color:var(--text-muted);">' + formatDate(f.created_at) + '</td>';
       tbody.appendChild(tr);
     });
     document.getElementById('tableWrap').classList.remove('hidden');

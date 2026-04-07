@@ -427,13 +427,15 @@ function populateCard(card) {
 // ── SAVE TO SUPABASE ──
 async function saveToSupabase(card) {
   try {
+    // Upsert: if wallet exists, update all fields with current data
     await fetch(SUPABASE_URL + '/rest/v1/forges', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'apikey': SUPABASE_KEY,
         'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Prefer': 'return=minimal'
+        'Prefer': 'resolution=merge-duplicates,return=minimal',
+        'on-conflict': 'wallet'
       },
       body: JSON.stringify({
         wallet: card.wallet,
@@ -444,7 +446,8 @@ async function saveToSupabase(card) {
         state_index: card.stateIndex,
         rarity: card.state.rarity,
         vcm_balance: card.vcm,
-        card_number: parseInt(card.cardNum)
+        card_number: parseInt(card.cardNum),
+        created_at: new Date().toISOString()
       })
     });
   } catch(e) {
